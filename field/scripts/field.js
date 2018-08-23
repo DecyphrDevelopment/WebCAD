@@ -154,7 +154,7 @@ window.setInterval(function () {
 
 function hideGroup1() {
   var x = document.getElementsByClassName("hideable1");
-  x.forEach(function(element) {
+  Array.prototype.forEach.call(x, function(element) {
     console.log(element.id);
     $("#" + element.id).hide("slow");
   });
@@ -162,7 +162,7 @@ function hideGroup1() {
 
 function showGroup1() {
   var x = document.getElementsByClassName("hideable1");
-  x.forEach(function(element) {
+  Array.prototype.forEach.call(x, function(element) {
     console.log(element.id);
     $("#" + element.id).show("slow");
   });
@@ -170,7 +170,7 @@ function showGroup1() {
 
 function hideGroup2() {
   var x = document.getElementsByClassName("hideable2");
-  x.forEach(function(element) {
+  Array.prototype.forEach.call(x, function(element) {
     console.log(element.id);
     $("#" + element.id).hide("slow");
   });
@@ -178,7 +178,7 @@ function hideGroup2() {
 
 function showGroup2() {
   var x = document.getElementsByClassName("hideable2");
-  x.forEach(function(element) {
+  Array.prototype.forEach.call(x, function(element) {
     console.log(element.id);
     $("#" + element.id).show("slow");
   });
@@ -195,7 +195,7 @@ function addCall(callDesc) {
                 if (response == "success") {
                     $("#call_result").html("<font color='green'>Added call.</font>");
                 } else {
-                    $("#call_result").html("<font color='red'>An unknown error has occured.</font>");
+                    $("#call_result").html("<font color='red'>An unknown error has occured.</font>"+response);
                 }
             }
         }

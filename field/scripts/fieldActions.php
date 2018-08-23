@@ -108,14 +108,14 @@ if (isset($_GET['updateUnit'])) {
 	$desc = $_GET['desc'];
 	$ucid = uniqid();
 	$sqlQuery = mysqli_query($connection, "INSERT INTO cad_calls (ucid, call_description) VALUES ('$ucid', '$desc')") or die(mysqli_error($connection));
-  $uuid = $_SESSION['uuid'];
+  $uuid = $_SESSION['cad_uuid'];
   $sqlQuery = mysqli_query($connection, "UPDATE units SET oncall_ucid='$ucid' WHERE uuid='$uuid'");
 	echo "success";
 } else if (isset($_GET['remCall']) && isset($_GET['ucid'])) {
 	$ucid = $_GET['ucid'];
 	$sqlQuery = mysqli_query($connection, "DELETE FROM cad_calls WHERE ucid='$ucid'");
-  $uuid = $_GET['uuid'];
-  $sqlQuery = mysqli_query($connection, "UPDATE units SET oncall_ucid='' WHERE ucid='$ucid'");
+  $uuid = $_GET['cad_uuid'];
+  $sqlQuery = mysqli_query($connection, "UPDATE units SET oncall_ucid='' WHERE oncall_ucid='$ucid'");
 	echo "success";
 } else {
 	echo "unknownFunction";
