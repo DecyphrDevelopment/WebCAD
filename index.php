@@ -59,7 +59,7 @@ a:active {
                         <small>
                           <strong>
                             <br><font color="#ccc">Powered by Xenon Hosting • Made by Daddy Decyphr#1065</font>
-                            <br><font color="#ccc">Version: BETA-004</font>
+                            <br><font color="#ccc">Version: <?php echo VERSION; ?></font>
                             <br><font color="#ccc">Official Discord server: <a href="https://discord.gg/zv37ynx">https://discord.gg/zv37ynx</a></font>
                           </strong>
                         </small>

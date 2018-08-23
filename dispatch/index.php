@@ -24,7 +24,7 @@ function loadForm ($adminInfo) {
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
-		<script language="javascript" type="text/javascript" src="scripts/dispatch.js?v53"></script>
+		<script language="javascript" type="text/javascript" src="scripts/dispatch.js?v=<?php echo VERSION; ?>"></script>
 		<link rel="stylesheet" type="text/css" href="../css/<?php echo STYLE; ?>">
 		<title><?php echo WEBSITE_TITLE; ?> | Dispatch CAD</title>
 	</head>

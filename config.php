@@ -1,8 +1,9 @@
 <?php
 define('BASE_URL', 'https://afs.xenonhosting.us');
-define('STYLE', 'style.dark.css?v=54');
+define('STYLE', 'style.dark.css?v=55');
 
 define('WEBSITE_TITLE', '');
+define('VERSION', 'BETA-005');
 define('IS_IN_MAINTENANCE', 'false');
 
 define('DB_NAME', 'afs_cad');

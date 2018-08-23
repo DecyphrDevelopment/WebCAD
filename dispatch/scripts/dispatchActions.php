@@ -62,9 +62,9 @@ if (isset($_GET['getUnits'])) {
           $color = "<font color='#ffb31c'>";
         }
   		  if ($activity >= 1) {
-  		  	$tableHTML = $tableHTML . "<tr><td style='width: 30 %'>" . $un . "</td><td style='width: 30 %' id='" . $uuid . "_status'>" . $color . $status . "</font></td><td style='width: 40 %'>" .
-  				"<button class='btn btn-flat btn-success status' id='" . $uuid . "' onClick='update_status(this.id, 1)'>10-8</button> <button class='btn btn-flat btn-warning status' id='" . $uuid . "' onClick='update_status(this.id, 2)' style='background:#f98500'>10-6</button> <button class='btn btn-flat btn-danger status' id='" . $uuid . "' onClick='update_status(this.id, 3)'>10-7</button> <button class='btn btn-flat btn-warning status' id='" . $uuid . "' onClick='update_status(this.id, 4)'>10-11</button> <button class='btn btn-flat btn-warning status' id='" . $uuid . "' onClick='update_status(this.id, 5)'>10-80</button> <button class='btn btn-flat btn-danger status' id='" . $uuid . "' onClick='remUnitFromCalls(this.id)'>Remove From Calls</button><button class='btn btn-flat btn-delete status' id='" . $uuid . "' onClick='update_delete(this.id)'>Remove</button>" . "</td ></tr > ";
-
+  		  	$tableHTML = $tableHTML . "<tr id='" . $un . "' draggable='true' ondragstart='drag(event)'><td style='width: 30 %'>" . $un . "</td><td style='width: 30 %' id='" . $uuid . "_status'>" . $color . $status . "</font></td><td style='width: 40 %'>" .
+  				"<button class='btn btn-flat btn-success status' id='" . $uuid . "' onClick='update_status(this.id, 1)'>10-8</button> <button class='btn btn-flat btn-warning status' id='" . $uuid . "' onClick='update_status(this.id, 2)' style='background:#f98500'>10-6</button> <button class='btn btn-flat btn-danger status' id='" . $uuid . "' onClick='update_status(this.id, 3)'>10-7</button>
+          <button class='btn btn-flat btn-danger status' id='" . $uuid . "' onClick='remUnitFromCalls(this.id)'>Remove From Calls</button><button class='btn btn-flat btn-delete status' id='" . $uuid . "' onClick='update_delete(this.id)'>Remove</button>" . "</td ></tr > ";
   		  }
     }
     $tableHTML = $tableHTML . "</table>";
@@ -103,7 +103,7 @@ if (isset($_GET['getUnits'])) {
 			} else {
 			    $unitsHTML = '<font color="red">None</font>';
 			}
-			$tableHTML = $tableHTML . "<tr><td style='width:30%'>" . $description . "</td> <td style='width:50%'>" . $unitsHTML . "</td> <td style='width:20%' data-id='" . $ucid . "_td'>" . '<input type=text class="form-control center unInput" id="' . $ucid . '" placeholder="Unit Number" style="width:100%; margin-top:0px; text-align:left;background:transparent;box-shadow:none">' . "<button class='btn btn-flat btn-delete status' id='" . $ucid . "' onClick='remCall(this.id)'>Remove Call</button></td></tr>";
+			$tableHTML = $tableHTML . "<tr id='" . $ucid . "' ondrop='drop(event)' ondragover='allowDrop(event)'><td style='width:30%'>" . $description . "</td> <td style='width:50%'>" . $unitsHTML . "</td> <td style='width:20%' data-id='" . $ucid . "_td'>" . '<input type=text class="form-control center unInput" id="' . $ucid . '" placeholder="Unit Number" style="width:100%; margin-top:0px; text-align:left;background:transparent;box-shadow:none">' . "<button class='btn btn-flat btn-delete status' id='" . $ucid . "' onClick='remCall(this.id)'>Remove Call</button></td></tr>";
 		}
 	}
 	$tableHTML = $tableHTML . "</table>";
@@ -135,6 +135,8 @@ if (isset($_GET['getUnits'])) {
 } else if (isset($_GET['remCall']) && isset($_GET['ucid'])) {
 	$ucid = $_GET['ucid'];
 	$sqlQuery = mysqli_query($connection, "DELETE FROM cad_calls WHERE ucid='$ucid'");
+  $uuid = $_GET['uuid'];
+  $sqlQuery = mysqli_query($connection, "UPDATE units SET oncall_ucid='' WHERE ucid='$ucid'");
 	echo "success";
 } else if (isset($_GET['removeUnit']) && isset($_GET['uuid'])) {
 	$uuid = $_GET['uuid'];

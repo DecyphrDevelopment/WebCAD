@@ -91,8 +91,8 @@ if (isset($_GET['updateUnit'])) {
 		$unitsHTML = "<font color='red'>n/a</font>";
     $none = true;
 	}
-	$tableHTML = "<table border='1' cellpadding='10' class='' id='tab'><tr> <th style='width:75%'>Call Description</th><th style='width:75%'>Other Assigned Units</th> </tr>";
-	$tableHTML = $tableHTML . "<tr><td style='width:75%'>" . $description . "</td><td style='width:25%'>" . $unitsHTML . "</td> </tr > ";
+	$tableHTML = "<table border='1' cellpadding='10' class='' id='tab'><tr> <th style='width:75%'>Call Description</th> <th style='width:75%'>Other Assigned Units</th> <th>Delete</th></tr>";
+	$tableHTML = $tableHTML . "<tr><td style='width:75%'>" . $description . "</td><td style='width:25%'>" . $unitsHTML . "</td> <td><button class='btn btn-flat btn-delete status' id='" . $ucid . "' onClick='remCall(this.id)'>Remove Call</button></td></tr > ";
 	$tableHTML = $tableHTML . "</table>";
   if ($none) {
     echo "<td>No active call.</td>";
@@ -104,6 +104,19 @@ if (isset($_GET['updateUnit'])) {
 	$value = mysqli_fetch_object($result);
 	$status = $value->is_priority;
 	echo $status;
+} else if (isset($_GET['addCall']) && isset($_GET['desc'])) {
+	$desc = $_GET['desc'];
+	$ucid = uniqid();
+	$sqlQuery = mysqli_query($connection, "INSERT INTO cad_calls (ucid, call_description) VALUES ('$ucid', '$desc')") or die(mysqli_error($connection));
+  $uuid = $_SESSION['uuid'];
+  $sqlQuery = mysqli_query($connection, "UPDATE units SET oncall_ucid='$ucid' WHERE uuid='$uuid'");
+	echo "success";
+} else if (isset($_GET['remCall']) && isset($_GET['ucid'])) {
+	$ucid = $_GET['ucid'];
+	$sqlQuery = mysqli_query($connection, "DELETE FROM cad_calls WHERE ucid='$ucid'");
+  $uuid = $_GET['uuid'];
+  $sqlQuery = mysqli_query($connection, "UPDATE units SET oncall_ucid='' WHERE ucid='$ucid'");
+	echo "success";
 } else {
 	echo "unknownFunction";
 }

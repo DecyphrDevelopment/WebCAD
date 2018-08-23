@@ -13,15 +13,18 @@ window.setInterval(function () {
                 var response = this.responseText;
                 if (response == "inactive") {
                     $("#status").html("Current Status: <br><font>Offline</font>");
+                    hideGroup1();
                 } else if (response == "noUser") {
                     continuee = false;
                     window.location.replace("../ums/login");
                 } else if (getCookie("isnewstatus") == "true") {
+                    showGroup1();
                     if (getCookie("status") == response) {
                         setCookie("isnewstatus", false, -1);
                         setCookie("status", 0, -1);
                         trys = 0;
                     } else {
+                      showGroup1();
                         if (trys == 20) {
                             setCookie("isnewstatus", false, -1);
                             setCookie("status", false, -1);
@@ -45,6 +48,7 @@ window.setInterval(function () {
                             console.log("out of trys");
                             trys = 0;
                         } else {
+                          showGroup1();
                             if (getCookie("status") == 1) {
                                 $("#status").html("Current Status: <br><font>10-8 On Duty</font>");
                             } else if (getCookie("status") == 2) {
@@ -66,6 +70,7 @@ window.setInterval(function () {
                         }
                     }
                 } else {
+                  showGroup1();
                     if (response == 1) {
                         $("#status").html("Current Status: <br><font>10-8 On Duty</font>");
                     } else if (response == 2) {
@@ -108,10 +113,7 @@ window.setInterval(function () {
         if (httpCalls.readyState == 4 && httpBolos.status == 200) {
             $("#call_table").html(this.responseText);
             if (!isnewcall && this.responseText != "<td>No active call.</td>") {
-              var x = document.getElementById("hidable1");
-                  x.style.display = "block";
-                x = document.getElementById("hidable2");
-                    x.style.display = "block";
+              showGroup2();
               var audio = new Audio('../includes/signal100.mp3');
               audio.volume = 0.5;
               audio.play();
@@ -119,10 +121,7 @@ window.setInterval(function () {
             isnewcall = true;
             if (this.responseText == "<td>No active call.</td>") {
               isnewcall = false;
-                var x = document.getElementById("hidable1");
-                    x.style.display = "none";
-                  x = document.getElementById("hidable2");
-                      x.style.display = "none";
+              hideGroup2();
             }
         }
     }
@@ -152,6 +151,74 @@ window.setInterval(function () {
     }
   httpPriority.send(null);
 }, 1000);
+
+function hideGroup1() {
+  var x = document.getElementsByClassName("hideable1");
+  x.forEach(function(element) {
+    console.log(element.id);
+    $("#" + element.id).hide("slow");
+  });
+}
+
+function showGroup1() {
+  var x = document.getElementsByClassName("hideable1");
+  x.forEach(function(element) {
+    console.log(element.id);
+    $("#" + element.id).show("slow");
+  });
+}
+
+function hideGroup2() {
+  var x = document.getElementsByClassName("hideable2");
+  x.forEach(function(element) {
+    console.log(element.id);
+    $("#" + element.id).hide("slow");
+  });
+}
+
+function showGroup2() {
+  var x = document.getElementsByClassName("hideable2");
+  x.forEach(function(element) {
+    console.log(element.id);
+    $("#" + element.id).show("slow");
+  });
+}
+
+function addCall(callDesc) {
+        var xhttp = new XMLHttpRequest();
+        var url = "scripts/fieldActions.php";
+        var params = "addCall=yes&desc=" + callDesc;
+        xhttp.open("GET", url + "?" + params, true);
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                var response = this.responseText;
+                if (response == "success") {
+                    $("#call_result").html("<font color='green'>Added call.</font>");
+                } else {
+                    $("#call_result").html("<font color='red'>An unknown error has occured.</font>");
+                }
+            }
+        }
+        xhttp.send(null);
+}
+
+function remCall(ucid) {
+        var xhttp = new XMLHttpRequest();
+        var url = "scripts/fieldActions.php";
+        var params = "remCall=yes&ucid=" + ucid;
+        xhttp.open("GET", url + "?" + params, true);
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                var response = this.responseText;
+                if (response == "success") {
+                    $("#call_result").html("<font color='green'>Removed call.</font>");
+                } else {
+                    $("#call_result").html("<font color='red'>An unknown error has occured.</font>");
+                }
+            }
+        }
+        xhttp.send(null);
+}
 
 function update_status(uuid, status) {
     var lastStatus = getNumericStatus(uuid);

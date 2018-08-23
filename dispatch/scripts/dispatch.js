@@ -4,6 +4,21 @@ var newstatusuuid = "";
 
 var isaddingunit = false;
 
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.currentTarget.id);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    addUnitToCall(data, ev.target.id);
+    alert(data + ev.target.id);
+}
+
 $(window).on("load", function () {
     var httpStatus = new XMLHttpRequest();
     var url = "scripts/dispatchActions.php";
