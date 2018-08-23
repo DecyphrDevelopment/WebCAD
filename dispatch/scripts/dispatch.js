@@ -78,7 +78,7 @@ window.setInterval(function () {
         callsxhttp.open("GET", url + "?" + statusParams, true);
         callsxhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-    	    
+
             document.getElementById("calls_table").innerHTML = this.responseText;
             if (isaddingunit) {
                 act.focus();
@@ -87,7 +87,7 @@ window.setInterval(function () {
         }
 }
         callsxhttp.send(null);
-    } 
+    }
 }, 2000);
 window.setInterval(function () {
     if(!isaddingunit) {
@@ -212,6 +212,12 @@ function update_status(uuid, status) {
     }
     if (status == 5) {
         $("#" + uuid + "_status").html("<font color='#ffb31c'>10-80 In Pursuit</font>");
+    }
+    if (status == 6) {
+        $("#" + uuid + "_status").html("<font color='#ffb31c'>10-97 Responding</font>");
+    }
+    if (status == 7) {
+        $("#" + uuid + "_status").html("<font color='#ffb31c'>10-23 On Scene</font>");
     }
     setCookie(uuid + "_status", status, 1);
     var xhttp = new XMLHttpRequest();

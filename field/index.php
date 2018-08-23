@@ -1,7 +1,7 @@
 <?php
 include '../config.php';
 include '../includes/menu.inc.php';
-$file_access = 2;
+$file_access = 3;
 $_SESSION['return_url'] = BASE_URL . "/field";
 require '../includes/check_access.inc.php';
 ?>
@@ -18,7 +18,7 @@ require '../includes/check_access.inc.php';
 	<head>
 		<script language="javascript" type="text/javascript" src="../scripts/js/cookies.js"></script>
 		<script language="javascript" type="text/javascript" src="../scripts/js/jQuery.js"></script>
-		<script language="javascript" type="text/javascript" src="scripts/field.js?v=6"></script>
+		<script language="javascript" type="text/javascript" src="scripts/field.js?v=16"></script>
 		<link rel="stylesheet" type="text/css" href="../css/<?php echo STYLE; ?>">
 		<title><?php echo WEBSITE_TITLE; ?> | Field MDT</title>
 	</head>
@@ -35,19 +35,7 @@ require '../includes/check_access.inc.php';
 	pace.stop();
 		</script>
 		<div id="sidebar" class="float-left" style="margin-top:0px;">
-			<h2 style="margin-top:0px">Status</h2>
-			<div id="status" class="center form-control" style="height:auto;margin-top:0px;margin-right:8px;width:auto">
-				Current Status:
-			</div>
-			<h2>Update Status</h1>
-			<div id="input" class="form-control center" style="height:auto;margin-top:0px;padding: 6px 6px; width:auto;">
-				<?php
-					echo "<button class='btn btn-flat btn-success status' id='" . $_SESSION['cad_uuid'] . "' onClick='update_status(this.id, 1)'>10-8</button> <button class='btn btn-flat btn-warning status' id='" . $_SESSION['cad_uuid'] . "' onClick='update_status(this.id, 2)' style='background:#5942f4;'>10-6</button> <button class='btn btn-flat btn-danger status' id='" . $_SESSION['cad_uuid'] . "' onClick='update_status(this.id, 3)'>10-7</button>";
-					echo "<br><button class='btn btn-flat btn-warning status' id='" . $_SESSION['cad_uuid'] . "' onClick='update_status(this.id, 4)'>10-11</button> <button class='btn btn-flat btn-warning status' id='" . $_SESSION['cad_uuid'] . "' onClick='update_status(this.id, 5)'>10-80</button>";
-					echo "<br><button class='btn btn-flat btn-delete status' id='" . $_SESSION['cad_uuid'] . "' onClick='update_offduty(this.id)'>Off Duty</button>";
-				?>
-			</div>
-			<h2>Priority</h1>
+			<h2 style="margin-top:0px;">Priority</h1>
 			<div id="prior" class="center form-control" style="height:auto;margin-top:0px;margin-right:8px;width:auto">
 				Priority Status:
 			</div>
@@ -57,19 +45,31 @@ require '../includes/check_access.inc.php';
 			</div>
 		</div>
 		<div id="main_panel" class="float-right">
-			<div id="call" style="clear:both;">
+			<div class="center" style="margin-top:0px;height:auto;">
+				<h1 id="status" style="margin-top:0px;">Current Status: </h1>
+				<?php
+				echo '<button id="' . $_SESSION['cad_uuid'] . '" class="statusButton btn btn-primary form-control" style="margin-right:3px;" onClick="update_status(this.id, 1)">10-8</button>';
+				echo '<button id="' . $_SESSION['cad_uuid'] . '" class="statusButton btn btn-primary form-control" style="margin-left:3px;margin-right:3px;" onClick="update_status(this.id, 2)">10-6</button>';
+				echo '<button id="' . $_SESSION['cad_uuid'] . '" class="statusButton btn btn-primary form-control" style="margin-left:3px;margin-right:3px;" onClick="update_status(this.id, 3)">10-7</button>';
+				echo '<button id="' . $_SESSION['cad_uuid'] . '" class="statusButton btn btn-primary form-control" style="margin-left:3px;margin-right:3px;" onClick="update_status(this.id, 4)">10-11</button>';
+				echo '<button id="' . $_SESSION['cad_uuid'] . '" class="statusButton btn btn-primary form-control" style="margin-left:3px;margin-right:3px;" onClick="update_status(this.id, 5)">10-80</button>';
+				echo '<button id="hidable1" class="statusButton btn btn-primary form-control" style="margin-left:3px;margin-right:3px;" onClick="update_status(this.id, 6)" hidden>10-97</button>';
+				echo '<button id="hidable2" class="statusButton btn btn-primary form-control" style="margin-left:3px;margin-right:3px;" onClick="update_status(this.id, 7)" hidden>10-23</button>';
+				echo '<button id="' . $_SESSION['cad_uuid'] . '" class="statusButton btn btn-primary form-control" style="margin-left:3px;" onClick="update_offduty(this.id)">Off Duty</button>';
+				?>
+		  </div>
+			<div id="call" style="clear:both;" class="center">
 				<h2 style="margin-top:0px;">Current Call</h2>
-				<div id="call_table" class="center form-control" style="width:auto;height:auto;margin-top:0px;margin-right:8px;">
+				<div id="call_table" class="center form-control" style="width:auto;height:auto;margin-top:0px;margin-right:8px;background:transparent;border:none;box-shadow:none;">
 					<table border='1' cellpadding='10' id='tab'>
 					<tr> <th style="width:75%">Call Description</th><th style="width:25%">Other Assigned Units</th> </tr>
 					</table>
 				</div>
 			</div>
-			<div id="bolos" style="clear:both;">
+			<div id="bolos" style="clear:both;" class="center">
 				<h2 style="margin-top:25px;">Bolos</h2>
-				<div id="bolo_table" class="center form-control" style="width:auto;height:auto;margin-top:0px;margin-right:8px;">
+				<div id="bolo_table" class="center form-control" style="width:auto;height:auto;margin-top:0px;margin-right:8px;background:transparent;border:none;box-shadow:none;">
 					<table border='1' cellpadding='10' id='tab'>
-					<tr> <th style="width:100%">Bolo</th> </tr>
 					</table>
 				</div>
 			</div>

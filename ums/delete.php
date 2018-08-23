@@ -27,6 +27,8 @@ if (isset($_GET['uuid'])) {
             $user = $value_al->username;
             $result = mysqli_query($connection, "DELETE FROM cad_users WHERE uuid='$uuid'")
             or die(mysqli_error());
+            $result = mysqli_query($connection, "DELETE FROM units WHERE uuid='$uuid'")
+            or die(mysqli_error());
             $_SESSION['ums_view_details'] = "user_deleted";
             logInfo("Deleted user. Username: " . $user . " ; UUID: " . $uuid, 1);
             header("Location: view.php");

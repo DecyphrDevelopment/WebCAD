@@ -2,7 +2,7 @@
 include '../config.php';
 include '../logging/log.php';
 $_SESSION['referer'] = $_SERVER['HTTP_REFERER'];
-function renderForm($username, $email, $unitNumber, $password, $passwordConfirm, $error, $info) {
+function renderForm($usernamer, $email, $unitNumber, $password, $passwordConfirm, $error, $info) {
 include '../includes/menu.inc.php';
 ?>
 <html>
@@ -32,7 +32,7 @@ include '../includes/menu.inc.php';
                     <br>
                     <p class="col-md-12">
                         <b>Username</b>
-                        <input type=text name="username" class="form-control" placeholder="Username" style="width:100%; margin-top: 0px;" value="<?php echo $username ?>" autocomplete="new-password">
+                        <input type=text name="username" class="form-control" placeholder="Username" style="width:100%; margin-top: 0px;" value="<?php echo $usernamer ?>" autocomplete="new-password">
                     </p>
                     <p class="col-md-12">
                         <b>E-Mail</b>
@@ -54,7 +54,7 @@ include '../includes/menu.inc.php';
                         <input type="submit" id="submitBtn" name="submit" class="btn btn-primary form-control" style="width:100%; margin-top: 0px;" value="Apply">
                         <input type="submit" name="cancel" class="btn btn-error form-control-error" style="width:100%; margin-top: 6px;" value="Cancel">
                     </p>
-                    <?php 
+                    <?php
                     if ($error != "") {
                         echo "<p><font color=red>".$error."</font></p>";
                     }
@@ -70,17 +70,17 @@ include '../includes/menu.inc.php';
 <?php
 }
 $server = DB_HOST;
-$user = DB_USER;
+$userr = DB_USER;
 $pass = DB_PASSWORD;
 $db = DB_NAME;
-$connection = mysqli_connect($server, $user, $pass, $db);
+$connection = mysqli_connect($server, $userr, $pass, $db);
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
 if (isset($_POST['submit'])) {
     $run = true;
-    $error = "";    
+    $error = "";
     $uuid = $_SESSION['cad_uuid'];
     $username = mysqli_real_escape_string($connection, htmlspecialchars($_POST['username']));
     $email = mysqli_real_escape_string($connection, htmlspecialchars($_POST['email']));
@@ -113,7 +113,7 @@ if (isset($_POST['submit'])) {
         $oldEmail = $users_result->email;
         $oldUnitNumber = $unit_result->callsign;
         if ($username != $oldUsername && $run == true) {
-            $sql = mysqli_query($connection, "SELECT uuid FROM cad_users WHERE username='$username'") 
+            $sql = mysqli_query($connection, "SELECT uuid FROM cad_users WHERE username='$username'")
             or die(mysqli_error($connection));
             if (mysqli_num_rows($sql) >= 1) {
                 $uuidres = mysqli_fetch_object($sql);
@@ -125,7 +125,7 @@ if (isset($_POST['submit'])) {
             }
         }
         if ($unitNumber != $oldUnitNumber && $run == true) {
-            $sql = mysqli_query($connection, "SELECT uuid FROM units WHERE callsign='$unitNumber'") 
+            $sql = mysqli_query($connection, "SELECT uuid FROM units WHERE callsign='$unitNumber'")
             or die(mysqli_error($connection));
             if (mysqli_num_rows($sql) >= 1) {
                 $uuidres = mysqli_fetch_object($sql);
@@ -136,7 +136,7 @@ if (isset($_POST['submit'])) {
             }
         }
         if ($email != $oldEmail && $run == true) {
-            $sql = mysqli_query($connection, "SELECT uuid FROM cad_users WHERE email='$email'") 
+            $sql = mysqli_query($connection, "SELECT uuid FROM cad_users WHERE email='$email'")
             or die(mysqli_error($connection));
             if (mysqli_num_rows($sql) >= 1) {
                 $uuidres = mysqli_fetch_object($sql);
@@ -164,9 +164,9 @@ else {
     $unit_sql = mysqli_query($connection, "SELECT callsign FROM units WHERE uuid='$uuid'") or die(mysqli_error($connection));
     $users_result = mysqli_fetch_object($users_sql);
     $unit_result = mysqli_fetch_object($unit_sql);
-    $username = $users_result->username;
+    $usernamer = $users_result->username;
     $email = $users_result->email;
     $unitNumber = $unit_result->callsign;
-    renderForm($username, $email, $unitNumber, "", "", "", "");
+    renderForm($usernamer, $email, $unitNumber, "", "", "", "");
 }
 ?>

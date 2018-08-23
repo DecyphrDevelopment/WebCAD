@@ -24,7 +24,7 @@ function loadForm ($adminInfo) {
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
-		<script language="javascript" type="text/javascript" src="scripts/dispatch.js?v52"></script>
+		<script language="javascript" type="text/javascript" src="scripts/dispatch.js?v53"></script>
 		<link rel="stylesheet" type="text/css" href="../css/<?php echo STYLE; ?>">
 		<title><?php echo WEBSITE_TITLE; ?> | Dispatch CAD</title>
 	</head>
@@ -40,27 +40,27 @@ function loadForm ($adminInfo) {
 	};
 	pace.stop();
 	</script>
-	<div id="sidebar" class="float-left" style="clear:both;height:auto;overflow-x:hidden;position:absolute;width:20%;margin-top:0px;margin-bottom:50px;z-index:1;">
+	<div id="sidebar" class="float-left" style="clear:both;height:auto;overflow-x:hidden;position:absolute;width:20%;margin-top:0px;margin-bottom:0px;z-index:1;background:transparent;border:none;padding-top:0px;">
 		<h1 style="margin-top:0px">Add Unit</h1>
-		<div id="input" class="form-control center" style="width:auto;height:auto;margin-top:0px;">
+		<div id="input" class="form-control center" style="width:auto;height:auto;margin-top:0px;background:transparent;border:none;box-shadow:none;">
 			<input type=text id="addunit" class="form-control center" placeholder="Unit Number" style="margin-top:0px;width:100%">
 			<button id="addunit_btn" class="btn btn-primary form-control center" onclick="update_add(addunit.value)" style="width:100%; margin-top:6px;">Add Unit</button>
 			<div id="result" style="clear:both;" class="center"></div>
 		</div>
 		<h1>Add Call</h1>
-		<div id="calls_input" class="form-control center" style="width:auto;height:auto;margin-top:0px">
+		<div id="calls_input" class="form-control center" style="width:auto;height:auto;margin-top:0px;background:transparent;border:none;box-shadow:none;">
 			<input type=text id="addcall" class="form-control center" placeholder="Call Description" style="margin-top:0px;width:100%">
 			<button id="addcall_btn" class="btn btn-primary form-control center" onclick="addCall(addcall.value)" style="width:100%; margin-top:6px;">Add Call</button>
 			<div id="call_result" style="clear:both;" class="center"></div>
 		</div>
 		<h1>Add Bolo</h1>
-		<div id="bolos_input" class="form-control center" style="width:auto;height:auto;margin-top:0px">
+		<div id="bolos_input" class="form-control center" style="width:auto;height:auto;margin-top:0px;background:transparent;border:none;box-shadow:none;">
 			<input type=text id="addbolo" class="form-control center" placeholder="Bolo Description" style="margin-top:0px;width:100%">
 			<button id="addbolo_btn" class="btn btn-primary form-control center" onclick="bolo_add(addbolo.value)" style="width:100%; margin-top:6px;">Add Bolo</button>
 			<div id="bolo_result" style="clear:both;" class="center"></div>
 		</div>
 		<h1>Priority</h1>
-		<div id="bolos_input" class="form-control center" style="width:auto;height:auto;margin-top:0px">
+		<div id="priority_input" class="form-control center" style="width:auto;height:auto;margin-top:0px">
 			<div id="prior" style="clear:both;" class="center"><font color='green'>No priority is currently in effect.</font></div>
 			<label class="switch">
 				<input id="priority" type="checkbox" onclick="priority();">
@@ -94,7 +94,7 @@ function loadForm ($adminInfo) {
 	<div id="main_panel" class="float-right" style="margin-top:0px">
 		<div id="main" style="margin-bottom:25px">
 			<h2 style="margin-top:0px">Units</h2>
-			<div id="table" class="form-control center" style="width:auto;height:auto;margin-top:0px;margin-right:8px;">
+			<div id="table" class="form-control center" style="width:auto;height:auto;margin-top:0px;margin-right:8px;background:transparent;box-shadow:none;border-radius:0px">
 				<table border='1' cellpadding='10' id='tab'>
 				<tr> <th style="width:30%">Number</th> <th style="width:30%">Status</th> <th style="width:40%">Update</th> </tr>
 				</table>
@@ -102,7 +102,7 @@ function loadForm ($adminInfo) {
 		</div>
 		<div id="calls" style="clear:both;">
 			<h2 style="margin-top:0px">Calls</h2>
-			<div id="calls_table" class="form-control center" style="width:auto;height:auto;margin-top:0px;margin-right:8px;">
+			<div id="calls_table" class="form-control center" style="width:auto;height:auto;margin-top:0px;margin-right:8px;background:transparent;box-shadow:none;border-radius:0px">
 				<table border='1' cellpadding='10' id='tab'>
 				<tr> <th style="width:30%">Call Description</th> <th style="width:50%">Assigned Units</th> <th style="width:20%">Update</th> </tr>
 				</table>
@@ -110,7 +110,7 @@ function loadForm ($adminInfo) {
 		</div>
 		<div id="bolos" style="clear:both;">
 			<h2 style="margin-top:25px">Bolos</h2>
-			<div id="bolo_table" class="form-control center" style="width:auto;height:auto;margin-top:0px;margin-right:8px;">
+			<div id="bolo_table" class="form-control center" style="width:auto;height:auto;margin-top:0px;margin-right:8px;background:transparent;box-shadow:none;border-radius:0px;">
 				<table border='1' cellpadding='10' id='tab'>
 				<tr> <th style="width:70%">Bolo</th> <th style="width:30%">Update</th> </tr>
 				</table>

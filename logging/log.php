@@ -23,17 +23,19 @@ function logInfo($message, $type) {
     if (!$connection) {
         die("Connection failed: " . mysqli_connect_error());
     }
-    $timeStamp = date("m/d/Y @ g:i:sA", time());
+    $dt = new DateTime("now", new DateTimeZone('America/Chicago'));
+
+    $timeStamp = $dt->format('m/d/Y @ g:i:sA');
     $username = $_SESSION['cad_user'];
     $uuid = $_SESSION['cad_uuid'];
     $ip = getRealIpAddr();
-    if ($type == 1) { 
-        $type = "admin"; } else if ($type == 0) { 
-        $type = "action"; } else if ($type == 2) { 
+    if ($type == 1) {
+        $type = "admin"; } else if ($type == 0) {
+        $type = "action"; } else if ($type == 2) {
         $type = "login";
     }
     if ($type != "login") {
-        mysqli_query($connection, "INSERT INTO ".$type."_log VALUES (DEFAULT, '$username', '$ip', '$message', '$timeStamp')")
+        mysqli_query($connection, "INSERT INTO ".$type."_log VALUES (DEFAULT, '$username', '$ip', '$message', '$timeStamp CST')")
         or die(mysqli_error($connection));
     }
     $result = mysqli_query($connection, "SELECT * FROM known_users WHERE ip='$ip' AND username='$username'") or die(mysqli_error($connection));
@@ -171,6 +173,6 @@ if (isset($_GET['clearLog'])) {
         }
         echo $logText;
     }
-    
+
 }
 ?>

@@ -1,6 +1,5 @@
 ﻿<?php
 include '../config.php';
-include '../includes/menu.inc.php';
 include '../logging/log.php';
 $_SESSION['referer'] = $_SERVER['HTTP_REFERER'];
 function renderForm($username, $email, $unitNumber, $password, $passwordConfirm, $error) {
@@ -66,7 +65,7 @@ a:active {
                         <input type="submit" id="submitBtn" name="submit" class="btn btn-primary form-control" style="width:100%; margin-top: 0px;" value="Submit">
                     </p>
                     <p class="col-md-12 center" style="padding:0px;">
-                        <font color="#ccc">Already have an account? </font><a href="login" style="color:#ccc">Login</a>
+                        <font color="#ccc">Already have an account? </font><a href=".." style="color:#ccc">Login</a>
                     </p>
                     <?php
                     if ($error != "") {
@@ -127,7 +126,7 @@ if (isset($_POST['submit'])) {
                 or die(mysqli_error($connection));
                 $sql = mysqli_query($connection, "INSERT INTO units VALUES ('$uuid', '$unitNumber', DEFAULT, DEFAULT, '')")
                 or die(mysqli_error($connection));
-            
+
 $to = "joshduncan0529@gmail.com";
 $subject = "SCRP CAD System";
 
@@ -382,7 +381,7 @@ $message = '<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:sc
                                     <p style="margin: 0;">Thank you for registering on the SCRP CAD system. If this wasn' . "'" . 't you, contact our staff team immediately.</p>
                                 </td>
                             </tr>
-                            
+
                         </table>
                     </td>
                 </tr>
@@ -402,7 +401,7 @@ $headers .= 'From: <no-reply@southerncaliforniarp.com>' . "\r\n";
 
 mail($to,$subject,$message,$headers);
 
-                header("Location: ../login");
+                header("Location: ..");
             }
         }
     }

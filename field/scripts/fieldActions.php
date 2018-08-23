@@ -19,7 +19,7 @@ if (isset($_GET['updateUnit'])) {
 	$uuid = $_SESSION['cad_uuid'];
 	if (isset($_GET['status'])) {
 		$status = $_GET['status'];
-		if ($status == 1 || $status == 2 || $status == 3 || $status == 4 || $status == 5) {
+		if ($status == 1 || $status == 2 || $status == 3 || $status == 4 || $status == 5 || $status == 6 || $status == 7) {
 			$sqlQuery = mysqli_query($connection, "UPDATE units SET status='$status', active='1' WHERE uuid='$uuid'");
 			logInfo("Updated status to: " . $status . " ; UUID: " . $uuid, 0);
 			echo "success";
@@ -50,7 +50,7 @@ if (isset($_GET['updateUnit'])) {
 	}
 } else if (isset($_GET['getBolos'])) {
 	$result = @mysqli_query($connection, "SELECT * FROM cad_bolos");
-	$tableHTML = "<table border='1' cellpadding='10' class='' id='tab'><tr> <th style='width:100%'>Bolo</th> </tr>";
+	$tableHTML = "";
 	if (mysqli_num_rows($result) > 0) {
 		while($row = mysqli_fetch_assoc($result)) {
 			$bolo = $row['bolo'];
@@ -60,6 +60,7 @@ if (isset($_GET['updateUnit'])) {
 	$tableHTML = $tableHTML . "</table>";
 	echo $tableHTML;
 } else if (isset($_GET['getCalls'])) {
+  $none = false;
 	$uuid = $_SESSION['cad_uuid'];
 	$result = @mysqli_query($connection, "SELECT oncall_ucid FROM units WHERE uuid='$uuid'");
 	$ucid = "";
@@ -74,7 +75,7 @@ if (isset($_GET['updateUnit'])) {
 		while($unitRow = mysqli_fetch_assoc($unitsRes)) {
 			$unitsHTML = $unitsHTML . $unitRow['callsign'] . ', ';
 		}
-	} else { 
+	} else {
 		$unitsHTML = '<font color="red">None</font>';
 	}
 	$description = "None";
@@ -88,11 +89,16 @@ if (isset($_GET['updateUnit'])) {
 	} else {
 		$description = "<font color='red'>None</font>";
 		$unitsHTML = "<font color='red'>n/a</font>";
+    $none = true;
 	}
 	$tableHTML = "<table border='1' cellpadding='10' class='' id='tab'><tr> <th style='width:75%'>Call Description</th><th style='width:75%'>Other Assigned Units</th> </tr>";
 	$tableHTML = $tableHTML . "<tr><td style='width:75%'>" . $description . "</td><td style='width:25%'>" . $unitsHTML . "</td> </tr > ";
 	$tableHTML = $tableHTML . "</table>";
-	echo $tableHTML;
+  if ($none) {
+    echo "<td>No active call.</td>";
+  } else {
+  	echo $tableHTML;
+  }
 } else if (isset($_GET['getPriority'])) {
 	$result = @mysqli_query($connection, "SELECT is_priority FROM cad_extra WHERE priority='0'");
 	$value = mysqli_fetch_object($result);

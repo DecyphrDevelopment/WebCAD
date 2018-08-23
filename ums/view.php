@@ -82,7 +82,10 @@ if (isset($_SESSION['ums_view_details'])) {
 		echo "<font color='red'>Insuffencient permissions to delete that user!</font>";
 	}
 	if ($_SESSION['ums_view_details'] == "user_deleted") {
-		echo "<font color='green'>User deleted!</font></div>";
+		echo "<font color='green'>User deleted!</font>";
+	}
+	if ($_SESSION['ums_view_details'] == "user_added") {
+		echo "<font color='green'>User added!</font>";
 	}
 	if ($_SESSION['ums_view_details'] == "cantEditUser") {
 		echo "<font color='red'>Insufficient permissions to edit that user.</font>";
@@ -198,20 +201,30 @@ if ($disableNext) {
 	echo '<a href="?page=' . (($currentPage + 1) - $disableNext) . '"><button id="nextPage" class="btn btn-primary form-control center" style="width:130px;margin-top:0px;margin-bottom:6px;float:right;">Next Page ></button></a>';
 }
 $pagesHtml = "";
-if ($currentPage >= 4) {
-	$pagesHtml .= '<a id="link_bar" href="?page=1">1</a> ... ';
+if ($currentPage == 1) {
+$pagesHtml .= '<a id="link_bar_dis" href="?page=1">1</a> ... ';
+} else {
+  $pagesHtml .= '<a id="link_bar" href="?page=1">1</a> ... ';
 }
+$i = 3;
+while ($i != 1) {
+  $i = $i - 1;
+  if (($currentPage - $i) > 0) {
+    $pagesHtml .= '<a id="link_bar" href="?page=' . ($currentPage - $i) . '">' . ($currentPage - $i) . '</a>';
+  }
+}
+$i = 0;
 while ($i != $pageCount) {
 	$i = $i + 1;
-	if ($i >= $currentPage && $i != $currentPage+2) {
+	if ($i >= $currentPage && $i != $currentPage+3) {
 		if ($i == $currentPage) {
 			$pagesHtml .= '<a id="link_bar_dis">' . $i . '</a>';
 		} else {
 			$pagesHtml .= '<a id="link_bar" href="?page=' . $i . '">' . $i . '</a>';
 		}
 	}
-	if ($i == $currentPage+2) {
-
+	if ($i == $currentPage+3) {
+    $i = $pageCount;
 	}
 }
 $pagesHtml .= ' ... <a id="link_bar" href="?page=' . $pageCount . '">' . $pageCount . '</a>';
@@ -223,7 +236,7 @@ if ($resRows == 0) {
 	if (($resRows - $endNumber) > (-1 * $maxPageSize)) {
 		echo "<table border='1' cellpadding='10'>";
 		echo "<tr> <th>Username</th> <th>Access Level</th> <th>E-Mail</th> <th>UUID</th> <th></th> <th></th></tr>";
-		
+
 		while($row = mysqli_fetch_array( $result )) {
 			if ($i >= $startNumber) {
 				if ($i != $endNumber) {

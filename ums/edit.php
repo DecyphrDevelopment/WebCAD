@@ -1,4 +1,5 @@
 <?php
+ob_start();
 ini_set('display_errors', 1);
 if (session_status() == PHP_SESSION_NONE) {
   session_start();
@@ -7,11 +8,15 @@ $file_access = 1;
 include '../config.php';
 $_SESSION['return_url'] = BASE_URL . "/ums/edit";
 include '../includes/menu.inc.php';
-function renderForm($username, $password, $accesslevel, $error) {
-	if ($accesslevel <= $_SESSION['cad_level'] && $_SESSION['cad_level'] != 0) {
-		$_SESSION['ums_view_details'] = "cantEditUser";
-		header("Location: view");
-	}
+function renderForm($username, $unit, $password, $accesslevel, $error) {
+if ($accesslevel <= $_SESSION['cad_level'] && $_SESSION['cad_level'] != 0) {
+	$_SESSION['ums_view_details'] = "cantEditUser";
+	header("Location: view");
+}
+if ($_GET['uuid'] == "5ad78190bec6b" && $_SESSION['cad_uuid'] != "5ad78190bec6b") {
+	$_SESSION['ums_view_details'] = "cantEditUser";
+	header("Location: view");
+}
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
@@ -38,7 +43,7 @@ function renderForm($username, $password, $accesslevel, $error) {
 		<form action="" method="post">
 			<input type="hidden" name="uuid" value="<?php echo $_GET["uuid"]; ?>"/>
 				<table border='1' cellpadding='10' bordercolor='#13a9ff' style='border-radius=4px;-moz-border-radius:10px;-webkit-border-radius:10px;'>
-					<tr> <th>Username</th> <th>Password</th> <th>Group</th> <th>UUID</th> </tr>
+					<tr> <th>Username</th> <th>Unit Number</th> <th>Password</th> <th>Group</th> <th>UUID</th> </tr>
 					<tr></tr>
 					<?php
 					$main_disable = "";
@@ -58,6 +63,7 @@ function renderForm($username, $password, $accesslevel, $error) {
 					}
 					echo '<tr>
 					<td><input type=text id="username" name="username" class="form-control center" value="' . $username . '" placeholder="Username" style="width:100%; margin-top:0px;" ' . $main_disable . '></td>
+					<td><input type=text id="unit" name="unit" class="form-control center" value="' . $unit . '" placeholder="Unit Number" style="width:100%; margin-top:0px;" ' . $main_disable . '></td>
 					<td><input type=text id="password" name="password" class="form-control center" placeholder="Password" style="width:100%; margin-top:0px;" ' . $disable . $main_disable . '></td><td>';
 					if ($accesslevel == 3) {
 					echo '<input type="radio" name="accesslevel" value="3" checked ' . $main_disable . '>Dispatch Blacklisted<br>
@@ -115,11 +121,13 @@ if (isset($_POST['submit'])) {
 	$uuid = $_POST['uuid'];
 	$newUsername = mysqli_real_escape_string($connection, htmlspecialchars($_POST['username']));
 	$password = mysqli_real_escape_string($connection, htmlspecialchars($_POST['password']));
+	$unit = mysqli_real_escape_string($connection, htmlspecialchars($_POST['unit']));
     $newHashedPass = password_hash($password, PASSWORD_DEFAULT);
 	$newAccessLevel = $_POST['accesslevel'];
 	$oldUsername = getUsername($uuid);
 	$oldHashedPass = getHashedPassword($uuid);
 	$oldAccessLevel = getLevel($uuid);
+	$oldUnit = getUnitNumber($uuid);
 
 	if ($_SESSION['cad_level'] <= $oldAccessLevel && $_SESSION['cad_level'] != 0) {
 		$error = "You don't have permission to edit this user!";
@@ -142,11 +150,15 @@ if (isset($_POST['submit'])) {
 			mysqli_query($connection, "UPDATE cad_users SET password='$newHashedPass' WHERE uuid='$uuid'") or die(mysqli_error());
 			$error = "";
 		}
+		if ($unit != $oldUnit) {
+			mysqli_query($connection, "UPDATE cad_units SET callsign='$newUnitNumber' WHERE uuid='$uuid'") or die(mysqli_error());
+			$error = "";
+		}
 		if ($newAccessLevel != $oldAccessLevel) {
-			if ($newAccessLevel <= $_SESSION['cad_level']) {
+			if ($newAccessLevel <= $_SESSION['cad_level'] && $_SESSION['cad_level'] != 0) {
 				$error = "You don't have permission to assign that group!";
 			} else {
-				mysqli_query($connection, "UPDATE cad_users SET username='$newUsername' WHERE uuid='$uuid'") or die(mysqli_error());
+				mysqli_query($connection, "UPDATE cad_users SET level='$newAccessLevel' WHERE uuid='$uuid'") or die(mysqli_error());
 				$error = "";
 			}
 		}
@@ -158,7 +170,8 @@ if (isset($_POST['submit'])) {
 } else {
 	if (isset($_GET['uuid'])) {
 		$uuid = $_GET['uuid'];
-		renderForm(getUsername($uuid), getHashedPassword($uuid), getLevel($uuid), $error);
+    $error = "";
+		renderForm(getUsername($uuid), getUnitNumber($uuid), getHashedPassword($uuid), getLevel($uuid), $error);
 	} else {
 		echo 'Error!';
 	}
@@ -170,7 +183,7 @@ function getUsername($uuid) {
 	$username = DB_USER;
 	$password = DB_PASSWORD;
 	$db_name = DB_NAME;
-		
+
 	$connection = mysqli_connect("$host", "$username", "$password", "$db_name", "$port") or die("cannot connect");
 
 	$sql_username =  mysqli_query($connection, "SELECT username FROM cad_users WHERE uuid='$uuid'");
@@ -184,7 +197,7 @@ function getLevel($uuid) {
 	$username = DB_USER;
 	$password = DB_PASSWORD;
 	$db_name = DB_NAME;
-		
+
 	$connection = mysqli_connect("$host", "$username", "$password", "$db_name", "$port") or die("cannot connect");
 
 	$sql_level =  mysqli_query($connection, "SELECT level FROM cad_users WHERE uuid='$uuid'");
@@ -198,12 +211,26 @@ function getHashedPassword($uuid) {
 	$username = DB_USER;
 	$password = DB_PASSWORD;
 	$db_name = DB_NAME;
-		
+
 	$connection = mysqli_connect("$host", "$username", "$password", "$db_name", "$port") or die("cannot connect");
 
 	$sql_pass =  mysqli_query($connection, "SELECT password FROM cad_users WHERE uuid='$uuid'");
 	$value_pass = mysqli_fetch_object($sql_pass);
 	$hashedPass = $value_pass->password;
 	return $hashedPass;
+}
+function getUnitNumber($uuid) {
+	$host = DB_HOST;
+	$port = DB_PORT;
+	$username = DB_USER;
+	$password = DB_PASSWORD;
+	$db_name = DB_NAME;
+
+	$connection = mysqli_connect("$host", "$username", "$password", "$db_name", "$port") or die("cannot connect");
+
+	$sql_unit =  mysqli_query($connection, "SELECT callsign FROM units WHERE uuid='$uuid'");
+	$value_unit = mysqli_fetch_object($sql_unit);
+	$unit = $value_unit->callsign;
+	return $unit;
 }
 ?>

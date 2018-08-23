@@ -1,13 +1,13 @@
 <?php
-define('BASE_URL', '');
-define('STYLE', 'style.dark.css?v=28');
+define('BASE_URL', 'https://afs.xenonhosting.us');
+define('STYLE', 'style.dark.css?v=54');
 
-define('WEBSITE_TITLE', 'AFS CAD System');
+define('WEBSITE_TITLE', '');
 define('IS_IN_MAINTENANCE', 'false');
 
-define('DB_NAME', 's1cad');
-define('DB_USER', '');
-define('DB_PASSWORD', '');
+define('DB_NAME', 'afs_cad');
+define('DB_USER', 'root');
+define('DB_PASSWORD', '%~K4%n;;WWdrbY%p');
 define('DB_HOST', 'localhost');
 define('DB_PORT', '3306');
 ?>

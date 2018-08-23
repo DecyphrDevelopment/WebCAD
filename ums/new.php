@@ -1,4 +1,5 @@
 ﻿<?php
+ob_start();
 ini_set('display_errors', 1);
 if (session_status() == PHP_SESSION_NONE) {
   session_start();
@@ -71,8 +72,8 @@ function renderForm($username, $password, $accesslevel, $error) {
                             $sp_disable = "";
                         }
                         ?>
-                        <input type="radio" name="accesslevel" value="3" <?php echo $unit_disable?>> Unit<br>
-                        <input type="radio" name="accesslevel" value="2" <?php echo $disp_disable?>> Dispatcher<br>
+                        <input type="radio" name="accesslevel" value="3" <?php echo $unit_disable?>> Dispatch Blacklisted<br>
+                        <input type="radio" name="accesslevel" value="2" <?php echo $disp_disable?>> User<br>
                         <input type="radio" name="accesslevel" value="1" <?php echo $admin_disable?>> Administrator<br>
                         <input type="radio" name="accesslevel" value="0" <?php echo $sp_disable?>> Super Administrator
                     </td>
@@ -124,7 +125,7 @@ if (isset($_POST['submit'])) {
         }
         else {
             $uuid = uniqid();
-            mysqli_query($connection, "INSERT cad_users SET username='$username', password='$hashed_pass', status='1', level='$accesslevel', uuid='$uuid', last_ip=''")
+            mysqli_query($connection, "INSERT cad_users SET username='$username', password='$hashed_pass', level='$accesslevel', uuid='$uuid', last_ip='', email=''")
             or die(mysqli_error($connection));
             $_SESSION['ums_view_details'] = "user_added";
             logInfo("Added user. Username: " . $username . " ; Access: " . $accesslevel . " ; UUID: " . $uuid, 1);

@@ -104,7 +104,7 @@ $_SESSION['return_url'] = BASE_URL;
 			document.getElementById('tools_set').style.left = ((200 - document.getElementById('tools').offsetWidth) * -1);
 		</script>
 		<div class="">
-			<h2 style="color:white">About the AFS Server 1 CAD System</h2>
+			<h2 style="color:white">About DecyphrCAD System</h2>
 			<p>The server 1 CAD was engineered by <strong>decyphr</strong> to be friendly with a public server environment. This being said, some things may not be so self explanatory.</p>
 			<p>If you are caught abusing the system you will be blacklisted from the website.</p>
             <br>
@@ -148,7 +148,7 @@ $_SESSION['return_url'] = BASE_URL;
             </div>
             <br>
 			<h1 style="color:white">Terms of Use</h1>
-            <p>Copyright © <?php echo date("Y"); ?> AFS Roleplay. All rights reserved.</p>
+            <p>Copyright © <?php echo date("Y"); ?> Decyphr Development. All rights reserved.</p>
 			<p>Copyright © <?php echo date("Y"); ?> decyphr. All rights reserved.</p>
 			<p>View the Terms of Use by clicking the button below.</p>
 			<button id="openTermsBox" class="btn btn-primary form-control" style="width:15%;margin-top:14px;display:block;margin-bottom:14px;margin-left:26px;">Open Terms of Use</button>
@@ -187,19 +187,19 @@ $_SESSION['return_url'] = BASE_URL;
 					</div>
 					<div style="width:100%;height:auto;padding:20px;">
 						<h2 style="margin-top:0px;margin-bottom:0px;">Contact</h2>
-						<p>If you wish to use the AFS CAD software for commercial or noncommercial use, contact the AFS CAD developer via Discord at <font color="#7289DA"><strong>decyphr#1065</strong></font>.</p>
+						<p>If you wish to use the DecyphrCAD software for commercial or noncommercial use, contact the DecyphrCAD developer via Discord at <font color="#7289DA"><strong>decyphr#1065</strong></font>.</p>
 						<h2 style="margin-top:20px;margin-bottom:0px;">Terms</h2>
-						<p>The AFS administration team can choose a price, set terms, and choose to provide a warranty or not to provide a warranty per purchase agreement.</p>
+						<p>The development team can choose a price, set terms, and choose to provide a warranty or not to provide a warranty per purchase agreement.</p>
 						<p>If you have been given written consent or bought rights to use this software, and you remove licensing and/or credit information you're license to use the software will be revoked without refund.</p>
-						<p>If you have been given written consent or bought rights to use this software, the AFS administration or development team is not liable to provide warranty services unless specified otherwise in your specific purchase agreement.</p>
-						<p>If you have been given written consent or bought rights to use this software, the AFS administration or development team can revoke your license to use the software at any time if it is deemed suitable for license revocation.</p>
+						<p>If you have been given written consent or bought rights to use this software, the development team is not liable to provide warranty services unless specified otherwise in your specific purchase agreement.</p>
+						<p>If you have been given written consent or bought rights to use this software, the development team can revoke your license to use the software at any time if it is deemed suitable for license revocation.</p>
 					</div>
 				</div>
             </div>
             <br>
             <br>
 		</div>
-		
+
 		<script>
 		var modal = document.getElementById('decyphr');
 		var btn = document.getElementById("openBox");
@@ -254,18 +254,18 @@ $_SESSION['return_url'] = BASE_URL;
 			var id = setInterval(frame, 10);
 			function frame() {
 				if (width <= 95) {
-					htmlelem.style.width = width + '%'; 
+					htmlelem.style.width = width + '%';
 					htmlelem.innerHTML = "<p class='center' style='padding:0px;'>" + width + "%</p>";
 				}
 				if (width <= 90) {
-					jselem.style.width = width + '%'; 
+					jselem.style.width = width + '%';
 					jselem.innerHTML = "<p class='center' style='padding:0px;'>" + width + "%</p>";
 				}
 				if (width <= 90) {
-					phpelem.style.width = width + '%'; 
+					phpelem.style.width = width + '%';
 					phpelem.innerHTML = "<p class='center' style='padding:0px;'>" + width + "%</p>";
 				}
-				width++; 
+				width++;
 			}
 		}
 		</script>

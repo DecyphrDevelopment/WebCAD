@@ -73,7 +73,7 @@ a:active {
 }
 if (isset($_POST['submit'])) {
     ini_set('display_errors', 1);
-    
+
     ob_start();
     require_once(__DIR__ . "/../config.php");
     require_once(__DIR__ . "/../logging/log.php");
@@ -83,9 +83,9 @@ if (isset($_POST['submit'])) {
     $password = DB_PASSWORD;
     $db_name = DB_NAME;
     $tbl_name = "cad_users";
-    
+
     $connection = mysqli_connect("$host", "$username", "$password", "$db_name", "$port")or die("cannot connect");
-    
+
     $myusername = $_POST['username'];
     $mypassword = $_POST['password'];
     $myusername = stripslashes($myusername);
@@ -94,16 +94,19 @@ if (isset($_POST['submit'])) {
     $mypassword = mysqli_real_escape_string($connection, $mypassword);
     $sql = "SELECT password FROM $tbl_name WHERE username='$myusername'";
     $result_un = mysqli_query($connection, $sql);
-    
+
     $count = mysqli_num_rows($result_un);
-    
+
     if ($count == 1) {
         $sql_al = "SELECT password FROM $tbl_name WHERE username='$myusername'";
         $result_al = mysqli_query($connection, $sql_al);
         $value_al = mysqli_fetch_object($result_al);
         $pass = $value_al->password;
         if (password_verify($mypassword, $pass)) {
-            $_SESSION["cad_user"] = $myusername;
+            $sql_un = "SELECT username FROM $tbl_name WHERE username='$myusername'";
+            $result_un = mysqli_query($connection, $sql_un);
+            $value_un = mysqli_fetch_object($result_un);
+            $_SESSION["cad_user"] = $value_un->username;
             $sql_al = "SELECT level FROM $tbl_name WHERE username='$myusername'";
             $result_al = mysqli_query($connection, $sql_al);
             $value_al = mysqli_fetch_object($result_al);
