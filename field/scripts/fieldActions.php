@@ -15,6 +15,16 @@ if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
+function gen_uuid() {
+    return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0x0fff ) | 0x4000,
+        mt_rand( 0, 0x3fff ) | 0x8000,
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+    );
+}
+
 if (isset($_GET['updateUnit'])) {
 	$uuid = $_SESSION['cad_uuid'];
 	if (isset($_GET['status'])) {
@@ -106,7 +116,7 @@ if (isset($_GET['updateUnit'])) {
 	echo $status;
 } else if (isset($_GET['addCall']) && isset($_GET['desc'])) {
 	$desc = $_GET['desc'];
-	$ucid = uniqid();
+	$ucid = gen_uuid();
 	$sqlQuery = mysqli_query($connection, "INSERT INTO cad_calls (ucid, call_description) VALUES ('$ucid', '$desc')") or die(mysqli_error($connection));
   $uuid = $_SESSION['cad_uuid'];
   $sqlQuery = mysqli_query($connection, "UPDATE units SET oncall_ucid='$ucid' WHERE uuid='$uuid'");

@@ -64,6 +64,33 @@ function getAdminLog() {
     }
     currentLog = "Admin";
 }
+function getLoginLog() {
+    var xhttp = new XMLHttpRequest();
+    var url = "../../logging/log.php";
+    var statusParams = "getLoginLog=yes";
+    if (getUrlParameter('ip') != undefined) {
+        statusParams = "getLoginLog=yes&ip="+getUrlParameter('ip');
+    }
+    if (getUrlParameter('username') != undefined) {
+        statusParams = "getLoginLog=yes&username="+getUrlParameter('username');
+    }
+    xhttp.open("GET", url + "?" + statusParams, true);
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            var response = this.responseText;
+            $("#log_area").html(response);
+            var $textarea = $('#log_area');
+            $textarea.scrollTop($textarea[0].scrollHeight);
+            $("#result").html("<font color='green'>Loaded login log</font>");
+        }
+    }
+    xhttp.send(null);
+    $("#log").html("Login Log");
+    if(getUrlParameter('ip') != undefined) {
+        $("#log").html("Login Log for " + getUrlParameter('ip'));
+    }
+    currentLog = "Login";
+}
 function clearCurrentLog() {
     var xhttp = new XMLHttpRequest();
     var url = "../../logging/log.php";

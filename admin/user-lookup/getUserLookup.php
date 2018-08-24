@@ -51,7 +51,7 @@ if (isset($_POST['username'])) {
                     }
                     if (in_array($username, $arr) == false) {
                         $arr[] = $username;
-                        $knownAliases = $knownAliases . $username . " : <font color='" . $color . "'>" . $group . "</font><br>";
+                        $knownAliases = $knownAliases . '<a id="link_bar" href="' . BASE_URL . '/admin/user-lookup/?user=' . $username . '">' . $username . "</a>" . " : <font color='" . $color . "'>" . $group . "</font><br>";
                     }
                 }
                 $anyAliases = true;
@@ -89,11 +89,11 @@ if (isset($_POST['username'])) {
     if ($anyAliases == false && $anyIPs == false) {
         echo json_encode(array('status' => 'invalid'));
     } else {
-        echo json_encode(array('status' => 'valid', 
-        'username' => $usernamePost, 
-        'uuid' => $userUUID, 
-        'unitnumber' => $userUN, 
-        'group' => $userGroup, 
+        echo json_encode(array('status' => 'valid',
+        'username' => $usernamePost,
+        'uuid' => $userUUID,
+        'unitnumber' => $userUN,
+        'group' => $userGroup,
         'ips' => $knownIPs,
         'aliases' => $knownAliases));
     }

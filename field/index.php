@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include '../config.php';
 include '../includes/menu.inc.php';
 $file_access = 3;

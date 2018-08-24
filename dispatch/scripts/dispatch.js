@@ -16,7 +16,6 @@ function drop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     addUnitToCall(data, ev.target.id);
-    alert(data + ev.target.id);
 }
 
 $(window).on("load", function () {

@@ -156,7 +156,9 @@ function hideGroup1() {
   var x = document.getElementsByClassName("hideable1");
   Array.prototype.forEach.call(x, function(element) {
     console.log(element.id);
-    $("#" + element.id).hide("slow");
+    $("#" + element.id).hide("slow", function() {
+
+    });
   });
 }
 
@@ -164,7 +166,9 @@ function showGroup1() {
   var x = document.getElementsByClassName("hideable1");
   Array.prototype.forEach.call(x, function(element) {
     console.log(element.id);
-    $("#" + element.id).show("slow");
+    $("#" + element.id).show("slow", function() {
+
+    });
   });
 }
 
@@ -172,7 +176,9 @@ function hideGroup2() {
   var x = document.getElementsByClassName("hideable2");
   Array.prototype.forEach.call(x, function(element) {
     console.log(element.id);
-    $("#" + element.id).hide("slow");
+    $("#" + element.id).hide("slow", function() {
+
+    });
   });
 }
 
@@ -180,7 +186,9 @@ function showGroup2() {
   var x = document.getElementsByClassName("hideable2");
   Array.prototype.forEach.call(x, function(element) {
     console.log(element.id);
-    $("#" + element.id).show("slow");
+    $("#" + element.id).show("slow", function() {
+
+    });
   });
 }
 

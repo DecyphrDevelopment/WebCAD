@@ -71,6 +71,17 @@ a:active {
 </html>
 <?php
 }
+
+function gen_uuid() {
+    return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0x0fff ) | 0x4000,
+        mt_rand( 0, 0x3fff ) | 0x8000,
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+    );
+}
+
 if (isset($_POST['submit'])) {
     ini_set('display_errors', 1);
 
@@ -114,8 +125,20 @@ if (isset($_POST['submit'])) {
             $result_id = mysqli_query($connection, $sql_id);
             $value_id = mysqli_fetch_object($result_id);
             $_SESSION["cad_level"] = $value_al->level;
-            $_SESSION["cad_uuid"] = $value_id->uuid;
+            if ($value_id->uuid == "") {
+              $uuid = gen_uuid();
+              mysqli_query($connection, "UPDATE cad_users SET uuid='$uuid' WHERE username='$value_un->username'") or die(mysql_error($connection));
+              $_SESSION["cad_uuid"] = $uuid;
+            } else {
+              $_SESSION["cad_uuid"] = $value_id->uuid;
+            }
+            $uuid = $_SESSION["cad_uuid"];
+            $sql_un = "SELECT username FROM $tbl_name WHERE uuid='$uuid'";
+            $result_un = mysqli_query($connection, $sql_un);
+            $value_un = mysqli_fetch_object($result_un);
+            $_SESSION["cad_user"] = $value_un->username;
             $ip = getRealIpAddr();
+            logInfo("", 2);
             mysqli_query($connection, "UPDATE cad_users SET last_ip='$ip' WHERE uuid='$value_id->uuid'") or die(mysql_error($connection));
             $sql_terms =  mysqli_query($connection, "SELECT terms_accepted FROM cad_users WHERE uuid='$value_id->uuid'");
             $value_terms = mysqli_fetch_object($sql_terms);

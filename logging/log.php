@@ -37,6 +37,9 @@ function logInfo($message, $type) {
     if ($type != "login") {
         mysqli_query($connection, "INSERT INTO ".$type."_log VALUES (DEFAULT, '$username', '$ip', '$message', '$timeStamp CST')")
         or die(mysqli_error($connection));
+    } else {
+        mysqli_query($connection, "INSERT INTO ".$type."_log VALUES (DEFAULT, '$username', '$uuid', '$ip', '$timeStamp CST')")
+        or die(mysqli_error($connection));
     }
     $result = mysqli_query($connection, "SELECT * FROM known_users WHERE ip='$ip' AND username='$username'") or die(mysqli_error($connection));
     if (mysqli_num_rows($result) == 0) {
@@ -156,6 +159,56 @@ if (isset($_GET['getAdminLog'])) {
         echo $logText;
     }
 }
+if (isset($_GET['getLoginLog'])) {
+    if (isset($_GET['ip'])) {
+        $ip = $_GET['ip'];
+        $logText = "";
+        $sql = mysqli_query($connection, "SELECT * FROM login_log WHERE ip='$ip'")
+        or die(mysqli_error());
+        while($row = mysqli_fetch_array( $sql )) {
+            $user = $row['user'];
+            $getLevelSQL = mysqli_query($connection, "SELECT * FROM cad_users WHERE username='$user'");
+            if (mysqli_num_rows($getLevelSQL) != 0) {
+                while ($row2 = mysqli_fetch_array($getLevelSQL)) {
+                    $level = $row2['level'];
+                }
+            }
+            $logText = $logText . $row['timestamp'] . " <a id='link_bar_" . $level . "' href='" . BASE_URL . "/admin/user-lookup/?user=" . $row['user'] . "'>" . $row['user'] . "</a> from <a id='link_bar' href='" . BASE_URL . "/admin/ip-lookup/?ip=" . $row['ip'] . "'>" . $row['ip'] . "</a><br>";
+        }
+        echo $logText;
+    } else if (isset($_GET['username'])) {
+        $username = $_GET['username'];
+        $logText = "";
+        $sql = mysqli_query($connection, "SELECT * FROM login_log WHERE user='$username'")
+        or die(mysqli_error());
+        while($row = mysqli_fetch_array( $sql )) {
+            $user = $row['user'];
+            $getLevelSQL = mysqli_query($connection, "SELECT * FROM cad_users WHERE username='$user'");
+            if (mysqli_num_rows($getLevelSQL) != 0) {
+                while ($row2 = mysqli_fetch_array($getLevelSQL)) {
+                    $level = $row2['level'];
+                }
+            }
+            $logText = $logText . $row['timestamp'] . " <a id='link_bar_" . $level . "' href='" . BASE_URL . "/admin/user-lookup/?user=" . $row['user'] . "'>" . $row['user'] . "</a> from <a id='link_bar' href='" . BASE_URL . "/admin/ip-lookup/?ip=" . $row['ip'] . "'>" . $row['ip'] . "</a><br>";
+        }
+        echo $logText;
+    } else {
+        $logText = "";
+        $sql = mysqli_query($connection, "SELECT * FROM login_log")
+        or die(mysqli_error());
+        while($row = mysqli_fetch_array( $sql )) {
+            $user = $row['user'];
+            $getLevelSQL = mysqli_query($connection, "SELECT * FROM cad_users WHERE username='$user'");
+            if (mysqli_num_rows($getLevelSQL) != 0) {
+                while ($row2 = mysqli_fetch_array($getLevelSQL)) {
+                    $level = $row2['level'];
+                }
+            }
+            $logText = $logText . $row['timestamp'] . " <a id='link_bar_" . $level . "' href='" . BASE_URL . "/admin/user-lookup/?user=" . $row['user'] . "'>" . $row['user'] . "</a> from <a id='link_bar' href='" . BASE_URL . "/admin/ip-lookup/?ip=" . $row['ip'] . "'>" . $row['ip'] . "</a><br>";
+        }
+        echo $logText;
+    }
+}
 if (isset($_GET['clearLog'])) {
     if ($_SESSION['cad_level'] != 0) {
         echo "99noPermissions";
@@ -163,6 +216,7 @@ if (isset($_GET['clearLog'])) {
         $logText = "";
         if ($_GET['clearLog'] == "Admin") { $table = "admin_log"; }
         if ($_GET['clearLog'] == "Action") { $table = "action_log"; }
+        if ($_GET['clearLog'] == "Login") { $table = "login_log"; }
         $sql = mysqli_query($connection, "TRUNCATE TABLE " . $table)
         or die(mysqli_error());
         logInfo("Cleared " . $_GET['clearLog'] . " log.", 1);

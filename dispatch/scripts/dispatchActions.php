@@ -14,6 +14,16 @@ if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
+function gen_uuid() {
+    return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0x0fff ) | 0x4000,
+        mt_rand( 0, 0x3fff ) | 0x8000,
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+    );
+}
+
 if (isset($_GET['getUnits'])) {
   $sql = "SELECT * FROM units";
 	$result = mysqli_query($connection, "SELECT * FROM units");
@@ -129,7 +139,7 @@ if (isset($_GET['getUnits'])) {
 	echo "success";
 } else if (isset($_GET['addCall']) && isset($_GET['desc'])) {
 	$desc = $_GET['desc'];
-	$ucid = uniqid();
+	$ucid = gen_uuid();
 	$sqlQuery = mysqli_query($connection, "INSERT INTO cad_calls (ucid, call_description) VALUES ('$ucid', '$desc')") or die(mysqli_error($connection));
 	echo "success";
 } else if (isset($_GET['remCall']) && isset($_GET['ucid'])) {
@@ -151,7 +161,7 @@ if (isset($_GET['getUnits'])) {
 	echo "success";
 } else if (isset($_GET['addUnit']) && isset($_GET['name'])) {
 	$name = $_GET['name'];
-	$uuid = uniqid();
+	$uuid = gen_uuid();
 	$sqlQuery = mysqli_query($connection, "SELECT * FROM units WHERE callsign='$name'");
 	$count = mysqli_num_rows($sqlQuery);
 	if ($count >= 1) {
@@ -163,7 +173,7 @@ if (isset($_GET['getUnits'])) {
 	}
 } else if (isset($_GET['addBolo']) && isset($_GET['bolo'])) {
 	$bolo = $_GET['bolo'];
-	$ubid = uniqid();
+	$ubid = gen_uuid();
 	$sqlQuery = mysqli_query($connection, "INSERT cad_bolos SET bolo='$bolo', ubid='$ubid'");
 	logInfo("Added bolo. UUID: " . $ubid . " ; Bolo: " . $bolo, 0);
 	echo "success";

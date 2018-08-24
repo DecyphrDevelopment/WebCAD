@@ -88,6 +88,16 @@ if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
+function gen_uuid() {
+    return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0xffff ),
+        mt_rand( 0, 0x0fff ) | 0x4000,
+        mt_rand( 0, 0x3fff ) | 0x8000,
+        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+    );
+}
+
 if (isset($_POST['submit'])) {
     $username = mysqli_real_escape_string($connection, htmlspecialchars($_POST['username']));
     $email = mysqli_real_escape_string($connection, htmlspecialchars($_POST['email']));
@@ -120,7 +130,7 @@ if (isset($_POST['submit'])) {
                 $error = "That username is already taken.";
                 renderForm($username, $email, $unitNumber, $password, $passwordConfirm, $error);
             } else {
-                $uuid = uniqid();
+                $uuid = gen_uuid();
                 $ip = getRealIpAddr();
                 $sql = mysqli_query($connection, "INSERT INTO cad_users VALUES (DEFAULT, '$username', '$hashedPassword', '$uuid', 2, DEFAULT, '$email', '$ip')")
                 or die(mysqli_error($connection));

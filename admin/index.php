@@ -1,4 +1,5 @@
 ﻿<?php
+ob_start();
 if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
@@ -50,7 +51,7 @@ function render($title, $license, $version, $tou, $info) {
                         <input type="submit" id="submitBtn" name="submit" class="btn btn-primary form-control" style="width:100%; margin-top: 0px;" value="Apply">
                         <input type="submit" name="cancel" class="btn btn-error form-control-error" style="width:100%; margin-top: 6px;" value="Cancel">
                     </p>
-                    <?php 
+                    <?php
 					if ($info != "" && $info != "changed") {
                         echo "<p><font color=green>".$info."</font></p>";
 					}
@@ -58,7 +59,7 @@ function render($title, $license, $version, $tou, $info) {
                 </form>
 				<form action="" method="post" id="conTerms">
                 <?php
-                if ($info == "changed") { 
+                if ($info == "changed") {
 					echo '<input type="hidden" name="confirmTerms" value="1"/>
 					<input type="hidden" name="terms" value="' . $tou . '"/>';
                     echo '<script>
@@ -79,11 +80,11 @@ function render($title, $license, $version, $tou, $info) {
 
 <?php
 }
-if (session_status() == PHP_SESSION_NONE) { 
+if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 ini_set('display_errors', 1);
-    
+
 ob_start();
 require_once(__DIR__ . "/../config.php");
 require_once(__DIR__ . "/../logging/log.php");
@@ -93,7 +94,7 @@ $port = DB_PORT;
 $username = DB_USER;
 $password = DB_PASSWORD;
 $db_name = DB_NAME;
-	
+
 $connection = mysqli_connect("$host", "$username", "$password", "$db_name", "$port") or die("cannot connect");
 
 if (isset($_POST['submit'])) {
@@ -113,7 +114,7 @@ if (isset($_POST['submit'])) {
 	}
 
 	render(getTitle(), getLicense(), getVersion(), $newTOU, $info);
-} else if (isset($_POST['conTerms'])) {
+} else if (isset($_POST['confirmTerms'])) {
 	$oldTOU = getTOU();
 	$newTOU = mysqli_real_escape_string($connection, stripslashes($_POST['terms']));
 
@@ -134,7 +135,7 @@ function getTitle() {
 	$username = DB_USER;
 	$password = DB_PASSWORD;
 	$db_name = DB_NAME;
-		
+
 	$connection = mysqli_connect("$host", "$username", "$password", "$db_name", "$port") or die("cannot connect");
 
 	$sql_title =  mysqli_query($connection, "SELECT website_title FROM cad_settings WHERE reference='1'");
@@ -148,7 +149,7 @@ function getLicense() {
 	$username = DB_USER;
 	$password = DB_PASSWORD;
 	$db_name = DB_NAME;
-		
+
 	$connection = mysqli_connect("$host", "$username", "$password", "$db_name", "$port") or die("cannot connect");
 
 	$sql_license =  mysqli_query($connection, "SELECT product_license FROM cad_settings WHERE reference='1'");
@@ -162,7 +163,7 @@ function getVersion() {
 	$username = DB_USER;
 	$password = DB_PASSWORD;
 	$db_name = DB_NAME;
-		
+
 	$connection = mysqli_connect("$host", "$username", "$password", "$db_name", "$port") or die("cannot connect");
 
 	$sql_version =  mysqli_query($connection, "SELECT website_version FROM cad_settings WHERE reference='1'");
@@ -176,7 +177,7 @@ function getTOU() {
 	$username = DB_USER;
 	$password = DB_PASSWORD;
 	$db_name = DB_NAME;
-		
+
 	$connection = mysqli_connect("$host", "$username", "$password", "$db_name", "$port") or die("cannot connect");
 
 	$sql_terms =  mysqli_query($connection, "SELECT terms_of_use FROM cad_settings WHERE reference='1'");

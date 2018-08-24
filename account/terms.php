@@ -1,4 +1,6 @@
 ﻿<?php
+ini_set('display_errors', 1);
+ob_start();
 $file = "login";
 $file_access = 9;
 include '../config.php';
@@ -22,7 +24,7 @@ function renderForm($status, $error) {
         <br>
         <br>
         <div>
-            <div class="login-box" id="login-box" style="width:70%;">
+            <div class="login-box" id="login-box" style="width:70%; height: 90%;overflow-y:auto">
                 <form action="" method="post">
                     <h2 style=text-align:center;color:tomato;font-weight:100;>Server 1 CAD Terms of Use</h2>
                     <br>
@@ -31,7 +33,7 @@ function renderForm($status, $error) {
                     </p>
                     <p class="col-md-12">
                         <b>Terms of Use</b>
-				        <div style="width:100%;height:25%;margin-top:0px;overflow-y:scroll;" id="returnUsers" class="form-control" contenteditable="false">
+				        <div style="width:100%;height:auto;margin-top:0px;" id="returnUsers" class="form-control" contenteditable="false">
                         <?php
                         $server = DB_HOST;
                         $user = DB_USER;
@@ -83,7 +85,7 @@ function renderForm($status, $error) {
                 </form>
                 <form action="" method="post" id="conDeny">
                 <?php
-                if ($error == "denied") { 
+                if ($error == "denied") {
                     echo '<input type="hidden" name="confirmDeny" value="1"/>';
                     echo '<script>
                     function checkDeny(){
@@ -102,7 +104,7 @@ function renderForm($status, $error) {
 </html>
 <?php
 }
-if (session_status() == PHP_SESSION_NONE) { 
+if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 if (isset($_SESSION['cad_uuid'])) {
@@ -117,9 +119,9 @@ if (isset($_SESSION['cad_uuid'])) {
     }
     if (isset($_POST['confirmDeny'])) {
         if ($_POST['confirmDeny'] == 1) {
-            $deleteUser = mysqli_query($connection, "DELETE FROM cad_users WHERE uuid='$uuid'") 
+            $deleteUser = mysqli_query($connection, "DELETE FROM cad_users WHERE uuid='$uuid'")
             or die(mysqli_error($connection));
-            $deleteUnit = mysqli_query($connection, "DELETE FROM units WHERE uuid='$uuid'") 
+            $deleteUnit = mysqli_query($connection, "DELETE FROM units WHERE uuid='$uuid'")
             or die(mysqli_error($connection));
             session_destroy();
             header("Location: login");
@@ -128,7 +130,7 @@ if (isset($_SESSION['cad_uuid'])) {
         mysqli_query($connection, "UPDATE cad_users SET terms_accepted='1' WHERE uuid='$uuid'")
         or die(mysqli_error());
         session_destroy();
-        header("Location: login");
+        header("Location: ..");
     } else if (isset($_POST['deny'])) {
         renderForm("", "denied");
     } else {

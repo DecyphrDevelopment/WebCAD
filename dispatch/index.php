@@ -1,4 +1,5 @@
 ﻿<?php
+ob_start();
 if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
@@ -20,6 +21,10 @@ function loadForm ($adminInfo) {
 
 		<!-- Firefox, Chrome, Safari, IE 11+ and Opera. 196x196 pixels in size. -->
 		<link rel="icon" href="images/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script language="javascript" type="text/javascript" src="../scripts/js/cookies.js"></script>
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

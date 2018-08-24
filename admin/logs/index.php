@@ -13,7 +13,7 @@ require '../../includes/check_access.inc.php';
 	<head>
 		<script language="javascript" type="text/javascript" src="../../scripts/js/cookies.js"></script>
 		<script language="javascript" type="text/javascript" src="../../scripts/js/jQuery.js"></script>
-		<script language="javascript" type="text/javascript" src="log.js?v=1.1.3"></script>
+		<script language="javascript" type="text/javascript" src="log.js?v=1.1.4"></script>
 		<link rel="stylesheet" type="text/css" href="../../css/<?php echo STYLE; ?>">
 		<script>
 			$(window).on("load", function () {
@@ -28,6 +28,7 @@ require '../../includes/check_access.inc.php';
 		<br><br><br>
         <div id="sidebar" class="float-left" style="margin-top:0px;">
             <button id="action_btn" class="btn btn-primary form-control center" onclick="getActionLog()" style="width:100%; margin-top:0px;">Action Log</button>
+            <button id="login_btn" class="btn btn-primary form-control center" onclick="getLoginLog()" style="width:100%; margin-top:6px;">Login Log</button>
             <button id="admin_btn" class="btn btn-primary form-control center" onclick="getAdminLog()" style="width:100%; margin-top:6px;">Admin Log</button>
             <button id="clear_btn" class="btn btn-error form-control-error center" onclick="clearCurrentLog()" style="width:100%; margin-top:6px;">Clear Current Log</button>
 			<div id="result" style="margin-top:20px;width:100%;height:auto;" class="center form-control"></div>
