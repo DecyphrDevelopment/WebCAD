@@ -261,7 +261,7 @@ if ($resRows == 0) {
 					}
 					echo '<td>' . $row['email'] . '</td>';
 					echo '<td>' . $row['uuid'] . '</td>';
-					echo '<td><button id="disp" class="btn btn-primary form-control center" onclick="window.location.href=' . "'edit?uuid=" . $row['uuid'] . "'" . '" style="width:100%;margin-top:0px;">Edit</button>
+					echo '<td><button id="disp" class="btn btn-primary form-control center" onclick="window.location.href=' . "'edit/" . $row['uuid'] . "'" . '" style="width:100%;margin-top:0px;">Edit</button>
 					</td>';
 					echo '<td><button id="disp" class="btn btn-primary form-control center" onclick="window.location.href=' . "'delete?uuid=" . $row['uuid'] . "'" . '" style="width:100%;margin-top:0px;">Delete</button></td>';
 					echo "</tr>";

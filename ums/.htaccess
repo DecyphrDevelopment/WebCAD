@@ -2,5 +2,6 @@ Options -Indexes
 
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^/]+)/? edit.php?uuid=$1 [L,QSA]
 RewriteRule ^([^\.]+)$ $1.php [NC,L]
 DirectoryIndex index.php

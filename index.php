@@ -9,8 +9,8 @@ function renderForm($username, $password, $error) {
 ?>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="../css/buttons.css">
-        <link rel="stylesheet" type="text/css" href="../css/<?php echo STYLE; ?>">
+        <link rel="stylesheet" type="text/css" href="css/buttons.css">
+        <link rel="stylesheet" type="text/css" href="css/<?php echo STYLE; ?>">
 		<title><?php echo WEBSITE_TITLE; ?></title>
         <style>
         #submitBtn {
