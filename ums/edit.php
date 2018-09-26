@@ -8,12 +8,12 @@ $file_access = 1;
 include '../config.php';
 $_SESSION['return_url'] = BASE_URL . "/ums/edit";
 include '../includes/menu.inc.php';
-function renderForm($username, $unit, $password, $accesslevel, $error) {
+function renderForm($uniq, $username, $unit, $password, $accesslevel, $error) {
 if ($accesslevel <= $_SESSION['cad_level'] && $_SESSION['cad_level'] != 0) {
 	$_SESSION['ums_view_details'] = "cantEditUser";
 	header("Location: view");
 }
-if ($_GET['uuid'] == "5ad78190bec6b" && $_SESSION['cad_uuid'] != "5ad78190bec6b") {
+if ($uniq == "5ad78190bec6b" && $_SESSION['cad_uuid'] != "5ad78190bec6b") {
 	$_SESSION['ums_view_details'] = "cantEditUser";
 	header("Location: view");
 }
@@ -23,7 +23,7 @@ if ($_GET['uuid'] == "5ad78190bec6b" && $_SESSION['cad_uuid'] != "5ad78190bec6b"
 <html>
 	<br>
 	<head>
-		<link rel="stylesheet" type="text/css" href="../css/<?php echo STYLE; ?>">
+		<link rel="stylesheet" type="text/css" href="../../css/<?php echo STYLE; ?>">
 		<link rel="stylesheet" type="text/css" href="../css/buttons.css">
 		<title><?php echo WEBSITE_TITLE; ?> | UMS</title>
 		<h1>User Managment System - Edit User</h1>
@@ -38,10 +38,10 @@ if ($_GET['uuid'] == "5ad78190bec6b" && $_SESSION['cad_uuid'] != "5ad78190bec6b"
 		if ($error != '') {
 			echo '<div style="padding:4px; border:1px solid red; color:red;">'.$error.'</div>';
 		}
-		$uuid = $_GET["uuid"];
+		$uuid = $uniq;
 		?>
 		<form action="" method="post">
-			<input type="hidden" name="uuid" value="<?php echo $_GET["uuid"]; ?>"/>
+			<input type="hidden" name="uuid" value="<?php echo $uniq; ?>"/>
 				<table border='1' cellpadding='10' bordercolor='#13a9ff' style='border-radius=4px;-moz-border-radius:10px;-webkit-border-radius:10px;'>
 					<tr> <th>Username</th> <th>Unit Number</th> <th>Password</th> <th>Group</th> <th>UUID</th> </tr>
 					<tr></tr>
@@ -114,7 +114,7 @@ include('connect-db.php');
 include '../logging/log.php';
 include '../includes/checks.php';
 if (isset($_POST['cancel'])) {
-	header('Location: .');
+	header('Location: ../');
 }
 if (isset($_POST['submit'])) {
 	$error = "";
@@ -151,7 +151,7 @@ if (isset($_POST['submit'])) {
 			$error = "";
 		}
 		if ($unit != $oldUnit) {
-			mysqli_query($connection, "UPDATE cad_units SET callsign='$newUnitNumber' WHERE uuid='$uuid'") or die(mysqli_error());
+			mysqli_query($connection, "UPDATE units SET callsign='$unit' WHERE uuid='$uuid'") or die(mysqli_error());
 			$error = "";
 		}
 		if ($newAccessLevel != $oldAccessLevel) {
@@ -166,15 +166,12 @@ if (isset($_POST['submit'])) {
 		logInfo("Edited user. Username: " . $oldUsername . " Access: " . $oldAccessLevel . " ; UUID: " . $uuid, 1);
 	}
 
-	header("Location: view");
+	header("Location: ../");
 } else {
-	if (isset($_GET['uuid'])) {
-		$uuid = $_GET['uuid'];
-    $error = "";
-		renderForm(getUsername($uuid), getUnitNumber($uuid), getHashedPassword($uuid), getLevel($uuid), $error);
-	} else {
-		echo 'Error!';
-	}
+  $uri = $_SERVER['REQUEST_URI'];
+  $uuid = explode('/', $uri)[4];
+  $error = "";
+  renderForm($uuid, getUsername($uuid), getUnitNumber($uuid), getHashedPassword($uuid), getLevel($uuid), $error);
 }
 
 function getUsername($uuid) {
